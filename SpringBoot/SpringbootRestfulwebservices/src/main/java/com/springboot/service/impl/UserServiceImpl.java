@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
         existingUser.setFirstName(user.getFirstName());
         existingUser.setLastName(user.getLastName());
         existingUser.setEmail(user.getEmail());
-        return repository.save(user);
+        return repository.save(existingUser);
         //Approach-2
         /*Optional<User> existingUser = repository.findById(user.getId());
         if (existingUser.isPresent()) {
