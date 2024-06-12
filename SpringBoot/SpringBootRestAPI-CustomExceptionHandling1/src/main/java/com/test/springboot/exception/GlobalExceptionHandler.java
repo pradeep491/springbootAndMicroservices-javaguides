@@ -28,4 +28,14 @@ public class GlobalExceptionHandler {
                 "USER_EMAIL_ALREADY_EXISTS");
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorDetails> handleGlobalExceptions(Exception exception,
+                                                                          WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),
+                exception.getMessage(),
+                request.getDescription(false),
+                "INTERNAL_SERVER_ERROR");
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
