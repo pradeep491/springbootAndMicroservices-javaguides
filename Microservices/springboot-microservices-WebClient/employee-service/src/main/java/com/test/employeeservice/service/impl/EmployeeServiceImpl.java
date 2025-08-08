@@ -9,17 +9,20 @@ import com.test.employeeservice.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 //@AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository repo;
-    private RestTemplate restTemplate;
+    //private RestTemplate restTemplate;
+    private WebClient webClient;
 
-    public EmployeeServiceImpl(EmployeeRepository repo, RestTemplate restTemplate) {
+    public EmployeeServiceImpl(EmployeeRepository repo,
+                               WebClient webClient) {
         this.repo = repo;
-        this.restTemplate = restTemplate;
+        this.webClient = webClient;
     }
 
     @Override
@@ -39,8 +42,13 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public APIResponseDTO getEmployeeByEmpid(Long empid) {
         Employee e = repo.findById(empid).get();
-        ResponseEntity<DepartmentDTO>  responseEntity= restTemplate.getForEntity("http://localhost:8080/api/departments/"+e.getDepartmentCode(), DepartmentDTO.class);
-        DepartmentDTO departmentDTO = responseEntity.getBody();
+        /*ResponseEntity<DepartmentDTO>  responseEntity= restTemplate.getForEntity("http://localhost:8080/api/departments/"+e.getDepartmentCode(), DepartmentDTO.class);
+        DepartmentDTO departmentDTO = responseEntity.getBody();*/
+        DepartmentDTO departmentDTO = webClient.get()
+                .uri("http://localhost:8080/api/departments/" + e.getDepartmentCode())
+                .retrieve()
+                .bodyToMono(DepartmentDTO.class)
+                .block();
 
         EmployeeDTO dto = new EmployeeDTO(e.getId(), e.getFirstName(), e.getLastName(), e.getEmail(),e.getDepartmentCode());
 
