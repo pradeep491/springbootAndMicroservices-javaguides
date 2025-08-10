@@ -8,3 +8,8 @@ Request:
         "departmentCode":"IT001"
     }
 2)http://localhost:8081/api/employees/2
+
+##API Gateway Testing URL's
+
+1)http://localhost:9191/api/employees/2   (GET)
+2)http://localhost:9191/api/departments/IT001 (GET)
