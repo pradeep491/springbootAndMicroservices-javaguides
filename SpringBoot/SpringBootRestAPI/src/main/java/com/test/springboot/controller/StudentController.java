@@ -32,7 +32,7 @@ public class StudentController {
     //{id} - URI template variable
     @GetMapping("/student/{id}")
     public Student studentPathVariable(@PathVariable int id) {
-       /* List<Student> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         students.add(new Student(491, "pradeep", "kandyala"));
         students.add(new Student(492, "punnu", "kandyala"));
         students.add(new Student(493, "jasvin", "kandyala"));
@@ -43,8 +43,8 @@ public class StudentController {
                 student = new Student(s.getId(), s.getFirstName(), s.getLastName());
             }
         }
-        return student;*/
-        return new Student(id, "pradeep", "kandyala");
+        return student;
+        //return new Student(id, "pradeep", "kandyala");
     }
 
     //Spring boot with Rest Path Variable
