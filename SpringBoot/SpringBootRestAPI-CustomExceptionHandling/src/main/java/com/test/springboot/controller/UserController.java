@@ -64,7 +64,7 @@ public class UserController {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(),
                                                      exception.getMessage(),
                                                      request.getDescription(false),
-                                            "User Not FOund");
+                                            "User Not Found");
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 }
