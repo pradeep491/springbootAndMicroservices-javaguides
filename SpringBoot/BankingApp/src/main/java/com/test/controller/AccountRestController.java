@@ -1,6 +1,8 @@
 package com.test.controller;
 
 import com.test.dto.AccountDTO;
+import com.test.dto.TransactionDTO;
+import com.test.dto.TransferFundDTO;
 import com.test.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,5 +60,19 @@ public class AccountRestController {
     @DeleteMapping("/{accountId}")
     public ResponseEntity<String> deleteAccount(@PathVariable Long accountId) {
         return new ResponseEntity<>(accountService.deleteAccount(accountId), HttpStatus.OK);
+    }
+
+    //Build Transfer REST API
+    @PostMapping("/transfer")
+    public ResponseEntity<String> transferFund(@RequestBody TransferFundDTO transferFundDTO) {
+        accountService.transferFunds(transferFundDTO);
+        return new ResponseEntity<>("Transfer successful...!", HttpStatus.OK);
+    }
+
+    //Build Transactions REST API
+    @GetMapping("/{accountId}/transactions")
+    public ResponseEntity<List<TransactionDTO>> fetchAccountTransactions(@PathVariable Long accountId) {
+        List<TransactionDTO> transactionDTOList = accountService.getAccountTransactions(accountId);
+        return new ResponseEntity<>(transactionDTOList, HttpStatus.OK);
     }
 }

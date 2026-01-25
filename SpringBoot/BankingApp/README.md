@@ -23,3 +23,17 @@
     http://localhost:8082/api/accounts
 6)DELETE ACCOUNT REST API
     http://localhost:8082/api/accounts/3
+
+### Account Transfer Requests
+1)POST:
+=======
+http://localhost:8082/api/accounts/transfer
+    {
+    "fromAccountId": 1,
+    "toAccountId": 2,
+    "amount": 22000
+    }
+### Transaction History
+1)GET
+======
+http://localhost:8082/api/accounts/4/transactions
