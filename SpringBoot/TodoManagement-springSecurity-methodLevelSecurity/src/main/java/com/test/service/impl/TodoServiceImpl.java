@@ -49,12 +49,13 @@ public class TodoServiceImpl implements TodoService {
         Todo todo = todoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Todo does not exists with the Id:" + id));
 
-        Todo todo1 = new Todo();
-        todo1.setId(todo.getId());
-        todo1.setDescription(todo.getDescription());
-        todo1.setCompleted(todo.isCompleted());
+        //Todo todo1 = new Todo();
+        //todo.setId(todoDTO.getId());
+        todo.setTitle(todoDTO.getTitle());
+        todo.setDescription(todoDTO.getDescription());
+        todo.setCompleted(todoDTO.isCompleted());
 
-        Todo updatedTodo = todoRepository.save(todo1);
+        Todo updatedTodo = todoRepository.save(todo);
         return modelMapper.map(updatedTodo, TodoDTO.class);
     }
 
