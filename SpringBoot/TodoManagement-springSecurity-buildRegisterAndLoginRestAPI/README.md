@@ -32,3 +32,15 @@ http://localhost:8083/api/todos/1/complete
 7)Patch Request
 ===============
 http://localhost:8083/api/todos/1/in-complete
+
+
+##Build Register API
+====================
+1)POST REQUEST
+http://localhost:8083/api/auth/register
+    {
+        "name": "jasvin",
+        "username": "jasvin1811",
+        "email": "jasvin@gmail.com",
+        "password": "jasvin@1811"
+    }

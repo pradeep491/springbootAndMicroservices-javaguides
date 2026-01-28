@@ -42,6 +42,8 @@ public class SpringSecurityConfig {
 
             //To Expose the Get End points Publicly
             //authorize.requestMatchers(HttpMethod.GET, "/api/**").permitAll();
+            //Giving public access to the Register & Login REST API
+            authorize.requestMatchers("/api/auth/**").permitAll();
             authorize.anyRequest().authenticated();
         });
         http.httpBasic(Customizer.withDefaults());
