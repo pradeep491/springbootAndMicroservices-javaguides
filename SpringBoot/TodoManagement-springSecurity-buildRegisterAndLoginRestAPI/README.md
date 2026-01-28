@@ -44,3 +44,24 @@ http://localhost:8083/api/auth/register
         "email": "jasvin@gmail.com",
         "password": "jasvin@1811"
     }
+
+    (or)
+
+    {
+        "name": "jyo",
+        "username": "jyo",
+        "email": "jyo@gmail.com",
+        "password": "jyo"
+    }
+
+Build LOGIN REST API
+====================
+ POST REQUEST:
+==============
+
+http://localhost:8083/api/auth/login
+
+    {
+        "usernameOrEmail":"jyo",
+        "password":"jyo"
+    }

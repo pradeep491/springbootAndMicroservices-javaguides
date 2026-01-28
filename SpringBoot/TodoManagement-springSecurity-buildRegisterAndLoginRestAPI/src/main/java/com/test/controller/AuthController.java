@@ -1,5 +1,6 @@
 package com.test.controller;
 
+import com.test.dto.LoginDTO;
 import com.test.dto.RegisterDTO;
 import com.test.service.AuthService;
 import org.springframework.http.HttpStatus;
@@ -23,5 +24,11 @@ public class AuthController {
     public ResponseEntity<String> register(@RequestBody RegisterDTO registerDTO) {
         String response = authService.register(registerDTO);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+    //Build LOGIN REST API
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
+        String response = authService.login(loginDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
