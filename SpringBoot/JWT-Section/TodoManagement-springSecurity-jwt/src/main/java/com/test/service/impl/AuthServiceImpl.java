@@ -1,0 +1,84 @@
+package com.test.service.impl;
+
+import com.test.dto.LoginDTO;
+import com.test.dto.RegisterDTO;
+import com.test.entity.Role;
+import com.test.entity.User;
+import com.test.exception.TodoAPIException;
+import com.test.repos.RoleRepository;
+import com.test.repos.UserRepository;
+import com.test.security.JwtTokenProvider;
+import com.test.service.AuthService;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
+
+@Service
+public class AuthServiceImpl implements AuthService {
+    private final UserRepository userRepository;
+
+    private final RoleRepository roleRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
+    private final AuthenticationManager authenticationManager;
+
+    private final JwtTokenProvider jwtTokenProvider;
+
+    public AuthServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
+
+
+    @Override
+    public String register(RegisterDTO registerDTO) {
+        //if the username is already exists in db or not
+        if (userRepository.existsByUsername(registerDTO.getUsername())) {
+            throw new TodoAPIException(HttpStatus.BAD_REQUEST, "Username already exists in the system");
+        }
+        //check whether the eamil is already exists in DB
+        if (userRepository.existsByEmail(registerDTO.getEmail())) {
+            throw new TodoAPIException(HttpStatus.BAD_REQUEST, "User Email already exists in the system");
+        }
+
+        User user = new User();
+        user.setName(registerDTO.getName());
+        user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        user.setEmail(registerDTO.getEmail());
+        user.setUsername(registerDTO.getUsername());
+
+        //Need to get role object and assign
+        Set<Role> roles = new HashSet<>();
+        Role userRole = roleRepository.findByName("ROLE_USER");
+        roles.add(userRole);
+
+        user.setRoles(roles);
+
+        userRepository.save(user);
+        return "User Registered successfully...!";
+    }
+
+    @Override
+    public String login(LoginDTO loginDTO) {
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDTO.getUsernameOrEmail(),
+                        loginDTO.getPassword()));
+        SecurityContextHolder.getContext()
+                .setAuthentication(authentication);
+
+        String token = jwtTokenProvider.generateToken(authentication);
+        return token;
+    }
+}
